@@ -1,0 +1,27 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+__pycache__/
+*.whl
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Data directories
+data/
+*/data/
+
+# Virtual environments
+venv/
+.env/
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+
+# Other
+*.pyd
+*.so
+*.log
+.idea/
