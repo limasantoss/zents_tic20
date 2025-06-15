@@ -132,10 +132,22 @@ st.markdown("---")
 if selected == "Visão Geral":
     st.markdown("<h3 style='color:#FF6F17;'>📌 Visão Geral</h3>", unsafe_allow_html=True)
     df_validos = df_filtros.dropna(subset=["order_delivered_customer_date"])
+
+    faturamento_total = df_filtros["valor_pagamento"].sum()
+    ticket_medio = faturamento_total / df_filtros["order_id"].nunique()
+    pedidos_estado = df_filtros.groupby("customer_state")["order_id"].count()
+    estado_top = pedidos_estado.idxmax()
+    pedidos_top = pedidos_estado.max()
+
     col1, col2, col3 = st.columns(3)
     col1.metric("Total de Pedidos", f"{df_filtros['order_id'].nunique():,}")
     col2.metric("Tempo Médio de Entrega", f"{df_validos['tempo_entrega'].mean():.1f} dias")
     col3.metric("Vendedores Ativos", f"{df_filtros['seller_id'].nunique():,}")
+
+    col4, col5, col6 = st.columns(3)
+    col4.metric("Faturamento Total", f"R$ {faturamento_total:,.2f}")
+    col5.metric("Ticket Médio", f"R$ {ticket_medio:,.2f}")
+    col6.metric("Top Estado por Pedidos", f"{estado_top} ({pedidos_top:,})")
 
     pedidos_mes = df_filtros.groupby("ano_mes")["order_id"].count().reset_index(name="total_pedidos")
     fig1 = px.bar(
